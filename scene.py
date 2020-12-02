@@ -24,7 +24,22 @@ class Scene(object):
         """
 
     def draw(self, pyxel):
-        pyxel.text(10, 10, "Hello world: Pyxel Scene Freamwork!", 0)
+        pyxel.text(10, 10, "Hello world: Pyxel Scene Framework!", 0)
+
+    """
+           このコンポーネントにトランジションする前に呼ばれる関数. before_transitionよりも前に呼び出されます。
+           @param pyi pyxelインスタンス。selfからも参照できるが、わざわざself.書くのもめんどくさいので渡してあげる。
+           """
+
+    def before_render(self, pyxel):
+        pass
+
+    """
+               他コンポーネントにトランジションする前に呼ばれる関数
+               @param pyi pyxelインスタンス。selfからも参照できるが、わざわざself.書くのもめんどくさいので渡してあげる。
+               """
+    def before_transition(self, pyxel):
+        pass
 
 
 class Scenes(object):
@@ -32,7 +47,7 @@ class Scenes(object):
     def __init__(self, app):
         self.app = app
         self.scenes = []
-        self.focused_scene = Scene(name="**_temp_scene")  # default
+        self.focused_scene = Scene(name="_init_hello_world_scene")  # default
         self.focused_scene.set_app(app)
 
     """
@@ -50,15 +65,11 @@ class Scenes(object):
     @param name 新規作成のシーン名
     """
 
-    def set_transition(self, name):
+    def transition(self, name):
+        prev_scene = self.focused_scene
         for i in range(len(self.scenes)):
-            scence = self.scenes[i]
-            if scence.name == name:  # 名前が一致したら、それをメインシーンに設定する。
-                self.focused_scene = scence
-
-    """
-    現在のメインシーンを返す。
-    """
-
-    def focused_scene(self):
-        return self.focused_scene  # とりあえず、マインシーンを返す
+            scene = self.scenes[i]
+            if scene.name == name and prev_scene.name != name:  # 名前が一致したら、それをメインシーンに設定する。
+                prev_scene.before_transition(self.app.pyi)   # イベントを呼び出す。
+                scene.before_render(self.app.pyi)
+                self.focused_scene = scene
