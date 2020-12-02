@@ -1,4 +1,5 @@
 import pyxel
+
 from scene import Scenes
 from scenes.test_scene import TestScene
 from scenes.main_scene import MainScene
@@ -21,11 +22,12 @@ class App:
         for i in range(len(register_scenes)):
             self.scenes_manager.register_scene(register_scenes[i])  # シーンを登録
 
-        self.scenes_manager.transition("main_scene")  # 初期のシーンを設定
+        # self.scenes_manager.transition("main_scene")  # 初期のシーンを設定
+        self.scenes_manager.transition("game_scene")  # 初期のシーンを設定(Dev)
 
         pyxel.init(200, 200)
-        pyxel.run(self.update, self.draw)
         pyxel.mouse(True)
+        pyxel.run(self.update, self.draw)
 
     def update(self):
         self.scenes_manager.focused_scene.update(pyxel=pyxel)

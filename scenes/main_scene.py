@@ -10,20 +10,22 @@ class MainScene(scene.Scene):
         self.tick = 0
 
     def update(self, pyxel):
+        # define key actions
         if pyxel.btnp(pyxel.KEY_A):
             self.app.scenes_manager.transition("test_scene")
         elif pyxel.btnp(pyxel.KEY_D):
             self.app.scenes_manager.transition("static_scene")
         elif pyxel.btnp(pyxel.KEY_SPACE):
             self.is_countdown = True
-        elif pyxel.btnp(pyxel.KEY_Q): # ゲーム自体を終了する
-            pyxel.quit() # kill this process.
+        elif pyxel.btnp(pyxel.KEY_Q):  # ゲーム自体を終了する
+            pyxel.quit()  # kill this process.
 
+        # process with any variables
         if self.is_countdown:
             self.tick += 1
             if self.tick % 30 == 0:  # 30秒に一回
                 self.counter -= 1
-                if self.counter <= 0: #カウントダウン終了
+                if self.counter <= 0:  # カウントダウン終了
                     self.app.scenes_manager.transition("game_scene")
 
     def draw(self, pyxel):
