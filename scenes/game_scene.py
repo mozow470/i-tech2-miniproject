@@ -7,7 +7,8 @@ class GameScene(scene.Scene):
         super().__init__(name)  # スーパークラス Omajinai
 
     def update(self, pyxel):
-        pass
+        if pyxel.btn(pyxel.KEY_Q):
+            self.app.scenes_manager.transition("main_scene")
 
     def draw(self, pyxel):
         pyxel.text(10, 10, "This is a game scene!", 0)
