@@ -4,7 +4,7 @@ from scene import Scenes
 from scenes.test_scene import TestScene
 from scenes.main_scene import MainScene
 from scenes.game_scene import GameScene
-from scenes.statics_scene import StaticScene
+from scenes.statistics_scene import StatisticsScene
 from scenes.countdown_scene import CountdownScene
 from scenes.result_scene import ResultScene
 
@@ -25,7 +25,7 @@ class App:
             TestScene(name="test_scene"),  # シーンを登録
             MainScene(name="main_scene"),
             GameScene(name="game_scene"),
-            StaticScene(name="static_scene"),
+            StatisticsScene(name="statistics_scene"),
             CountdownScene(name="countdown_scene"),
             ResultScene(name="result_scene")
 

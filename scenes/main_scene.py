@@ -11,7 +11,7 @@ class MainScene(scene.Scene):
     def update(self, pyxel):
         # define key actions
         if pyxel.btnp(pyxel.KEY_D):
-            self.app.scenes_manager.transition("static_scene")
+            self.app.scenes_manager.transition("statistics_scene")
         elif pyxel.btnp(pyxel.KEY_SPACE):
             self.app.scenes_manager.transition("countdown_scene")
         elif pyxel.btnp(pyxel.KEY_A):

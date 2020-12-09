@@ -1,10 +1,9 @@
-import math
 import scene
 
 from components.liner_graph import LinerGraph
 
 
-class StaticScene(scene.Scene):
+class StatisticsScene(scene.Scene):
 
     def __init__(self, name):
         super().__init__(name)  # スーパークラス Omajinai
@@ -34,7 +33,7 @@ class StaticScene(scene.Scene):
 
     def before_render(self, pyxel, parameters):
         data = self.app.store.records
-        self.data_x = [i for i in range(len(data))] # index
+        self.data_x = [i for i in range(len(data))]  # index
         self.data_y = [int(data[i][1]) for i in range(len(data))]  # score
         self.zoom_on = 1.0  # set Default
         self.graph = self.make_graph()
