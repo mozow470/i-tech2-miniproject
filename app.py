@@ -5,25 +5,36 @@ from scenes.test_scene import TestScene
 from scenes.main_scene import MainScene
 from scenes.game_scene import GameScene
 from scenes.statics_scene import StaticScene
+from scenes.countdown_scene import CountdownScene
+from scenes.result_scene import ResultScene
+
+from store import make_store_files, Store
 
 
 class App:
 
     def __init__(self):
         self.pyi = pyxel
+        self.store = Store(app=self);
         self.scenes_manager = Scenes(app=self)
+
+        make_store_files()  # make an store file if not exit in working folder.
+        self.store.import_from_store()
 
         register_scenes = [
             TestScene(name="test_scene"),  # シーンを登録
             MainScene(name="main_scene"),
             GameScene(name="game_scene"),
-            StaticScene(name="static_scene")
+            StaticScene(name="static_scene"),
+            CountdownScene(name="countdown_scene"),
+            ResultScene(name="result_scene")
+
         ]
         for i in range(len(register_scenes)):
             self.scenes_manager.register_scene(register_scenes[i])  # シーンを登録
 
-        # self.scenes_manager.transition("main_scene")  # 初期のシーンを設定
-        self.scenes_manager.transition("game_scene")  # 初期のシーンを設定(Dev)
+        self.scenes_manager.transition("main_scene")  # 初期のシーンを設定
+        # self.scenes_manager.transition("game_scene")  # 初期のシーンを設定(Dev)
 
         pyxel.init(200, 200)
         pyxel.mouse(True)

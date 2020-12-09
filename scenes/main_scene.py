@@ -5,39 +5,29 @@ class MainScene(scene.Scene):
 
     def __init__(self, name):
         super().__init__(name)  # スーパークラス Omajinai
-        self.is_countdown = False
-        self.counter = 3
         self.tick = 0
+        self.is_appear_title = True
 
     def update(self, pyxel):
         # define key actions
-        if pyxel.btnp(pyxel.KEY_A):
-            self.app.scenes_manager.transition("test_scene")
-        elif pyxel.btnp(pyxel.KEY_D):
+        if pyxel.btnp(pyxel.KEY_D):
             self.app.scenes_manager.transition("static_scene")
         elif pyxel.btnp(pyxel.KEY_SPACE):
-            self.is_countdown = True
+            self.app.scenes_manager.transition("countdown_scene")
         elif pyxel.btnp(pyxel.KEY_Q):  # ゲーム自体を終了する
             pyxel.quit()  # kill this process.
 
-        # process with any variables
-        if self.is_countdown:
-            self.tick += 1
-            if self.tick % 30 == 0:  # 30秒に一回
-                self.counter -= 1
-                if self.counter <= 0:  # カウントダウン終了
-                    self.app.scenes_manager.transition("game_scene")
+        self.tick +=1
+
+        if self.tick % 10 == 0:
+            self.is_appear_title = not self.is_appear_title
 
     def draw(self, pyxel):
-        if self.is_countdown:
-            pyxel.text(75, 90, "Stating in {}".format(self.counter), 0)
-        else:
+        if self.is_appear_title:
             pyxel.text(50, 90, "Press space to start game.", 0)
-            pyxel.text(57, 180, "Press D to view your stats for all.", 5)
-            pyxel.text(5, 190, "Press A to view Hello World!", 5)
+        pyxel.text(57, 180, "Press D to view your stats for all.", 5)
+        pyxel.text(5, 190, "Press Q to quit this game", 5)
 
-    def before_render(self, pyxel):
-        self.is_countdown = False
+    def before_render(self, pyxel, parameters):
         self.tick = 0
-        self.counter = 3
         print("Switch to", self.name)

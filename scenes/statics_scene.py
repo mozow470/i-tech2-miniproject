@@ -10,20 +10,13 @@ class StaticScene(scene.Scene):
         super().__init__(name)  # スーパークラス Omajinai
 
         # data
-        rad = 180 + 1
-        data_x = [n for n in range(rad)]
-        roc = [float(i) / 60.0 for i in range(rad)]
-        data_y = [2 * roc[m] * math.sin(math.radians(m * 2 * (1 + roc[m]))) for m in range(rad)]
-
-        self.zoom_on = 0.1
-
-        self.graph = LinerGraph(data_x=data_x, data_y=data_y, zoom=0.1, graph_size=[150, 95])
-        self.graph.calculate(zoom=self.zoom_on)
+        self.data_x = []
+        self.data_y = []
+        self.graph = self.make_graph()
+        self.zoom_on = 1.0
 
     def update(self, pyxel):
-        if pyxel.btnp(pyxel.KEY_A):
-            self.app.scenes_manager.transition("test_scene")
-        elif pyxel.btnp(pyxel.KEY_S):
+        if pyxel.btnp(pyxel.KEY_S):
             self.app.scenes_manager.transition("main_scene")
 
         wheel_diff = pyxel.mouse_wheel
@@ -36,7 +29,16 @@ class StaticScene(scene.Scene):
             self.graph.calculate(zoom=self.zoom_on)  # 再計算
 
     def draw(self, pyxel):
-        self.graph.render(pyxel, x=30, y=120, title="Zoom on x{}".format(round(self.zoom_on, 1)))
+        self.graph.render(pyxel, x=10, y=130, title="Your Score statics x{}".format(round(self.zoom_on, 1)))
+        pyxel.text(5, 190, "Press S to back to main.", 5)
 
-    def before_transition(self, pyxel):
-        self.zoom_on = 0.1  # set Default
+    def before_render(self, pyxel, parameters):
+        data = self.app.store.records
+        self.data_x = [i for i in range(len(data))] # index
+        self.data_y = [int(data[i][1]) for i in range(len(data))]  # score
+        self.zoom_on = 1.0  # set Default
+        self.graph = self.make_graph()
+        self.graph.calculate(zoom=self.zoom_on)
+
+    def make_graph(self):
+        return LinerGraph(data_x=self.data_x, data_y=self.data_y, zoom=0.1, graph_size=[180, 100])

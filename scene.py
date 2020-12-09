@@ -31,7 +31,7 @@ class Scene(object):
            @param pyi pyxelインスタンス。selfからも参照できるが、わざわざself.書くのもめんどくさいので渡してあげる。
            """
 
-    def before_render(self, pyxel):
+    def before_render(self, pyxel, parameters):
         pass
 
     """
@@ -65,11 +65,11 @@ class Scenes(object):
     @param name 新規作成のシーン名
     """
 
-    def transition(self, name):
+    def transition(self, name, **parameters):
         prev_scene = self.focused_scene
         for i in range(len(self.scenes)):
             scene = self.scenes[i]
             if scene.name == name and prev_scene.name != name:  # 名前が一致したら、それをメインシーンに設定する。
                 prev_scene.before_transition(self.app.pyi)   # イベントを呼び出す。
-                scene.before_render(self.app.pyi)
+                scene.before_render(self.app.pyi, parameters=parameters)
                 self.focused_scene = scene

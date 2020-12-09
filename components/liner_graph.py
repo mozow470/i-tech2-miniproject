@@ -30,8 +30,8 @@ class LinerGraph:
             result = max(data)
             return result if result > 0 else 1
 
-        ad_data_x = [self.data_x[i] for i in range(data_range_len)]
-        ad_data_y = [self.data_y[i] for i in range(data_range_len)]
+        ad_data_x = self.data_x[0:data_range_len]
+        ad_data_y = self.data_y[0:data_range_len]
 
         # グラフの描写サイズに合わせて指数化する
         data_x_max, data_y_max = get_max(ad_data_x), get_max(ad_data_y)
@@ -54,7 +54,7 @@ class LinerGraph:
         pyxel_app.line(x, y, x, y - self.graph_size_y, 0)
 
         # ラベル感覚を調整する
-        interval = self.graph_size_x / data_size
+        interval = self.graph_size_x / data_size if data_size > 0 else 99999.0
         interval_exp = 1
 
         while interval <= 15.0:  # ラベルの感覚が最低15px以上になるように
