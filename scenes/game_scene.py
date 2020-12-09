@@ -8,7 +8,7 @@ class Ball(object):
         self.game = game
         self.radius = radius
         self.xy = [x, y]
-        self.is_trick = random() <= 0.15 # 15%の確立
+        self.is_trick = random() <= 0.15  # 15%の確立
 
     def is_clicked(self, x, y):
         vec = self.xy[0] - x, self.xy[1] - y  # マウスの位置から、オブジェクトの中心座標に向いたベクトル
@@ -20,9 +20,9 @@ class Ball(object):
         self.radius = self.radius * 0.99  # 徐々にボールを小さくしてみる
 
         if self.radius <= 1:  # 直径が1以下になったら、当たり判定を初期化する。
-            self.reset(x=randint(10, 190), y=randint(10, 190))
             if not self.is_trick:
                 self.game.count_miss()  # ミスをカウント
+            self.reset(x=randint(10, 190), y=randint(10, 190))
 
     def reset(self, x, y):
         self.xy[0] = x
@@ -61,7 +61,7 @@ class GameScene(scene.Scene):
                 accurate = ball.is_clicked(mouse_xy[0], mouse_xy[1])  # クリック精度を取得
 
                 if accurate <= 1:  # ボールをクリックした
-                    if ball.is_trick: # クリックしてはいけないトリックボールをクリックした。
+                    if ball.is_trick:  # クリックしてはいけないトリックボールをクリックした。
                         self.point -= 50
                         if self.point < 0:
                             self.point = 0
