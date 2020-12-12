@@ -5,7 +5,7 @@ from random import randint, random
 class Preset(object):
 
     def __init__(self, name="Easy", ball_count=4, limit_of_miss=5, rate_of_trick=0.1):
-        self.name = name # Preset name
+        self.name = name  # Preset name
         self.ball_count = ball_count  # ボール（当たり判定の個数）
         self.limit_of_miss = limit_of_miss  # ミス許容範囲
         self.rate_of_trick = rate_of_trick  # トリックボール率
@@ -45,7 +45,7 @@ class GameScene(scene.Scene):
 
     def __init__(self, name):
         super().__init__(name)  # スーパークラス Omajinai
-        self.reset(Preset()) # Load default preset
+        self.reset(Preset())  # Load default preset
 
     def reset(self, preset: Preset):
         # プリセットからパラメータを読み込む（副作用防止のため、値を渡すだけ。）
@@ -111,4 +111,5 @@ class GameScene(scene.Scene):
     def count_miss(self):
         self.miss_count += 1
         if self.miss_count >= self.limit_of_miss:  # 10会ミスった
-            self.app.scenes_manager.transition("result_scene", point=self.point, accuracy=self.accuracy, preset_name=self.preset_name)  # リザルト画面へ
+            self.app.scenes_manager.transition("result_scene", point=self.point, accuracy=self.accuracy,
+                                               preset_name=self.preset_name)  # リザルト画面へ

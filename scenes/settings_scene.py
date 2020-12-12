@@ -1,24 +1,25 @@
 import scene
 from .game_scene import Preset
 
-
 presets = [
-            Preset(name="Easy", ball_count=4, limit_of_miss=5, rate_of_trick=0.1), # Easy
-            Preset(name="Normal", ball_count=5, limit_of_miss=5, rate_of_trick=0.075), # Normal
-            Preset(name="Advanced", ball_count=7, limit_of_miss=5, rate_of_trick=0.05), # Hard
-        ]
+    Preset(name="Easy", ball_count=4, limit_of_miss=5, rate_of_trick=0.1),  # Easy
+    Preset(name="Normal", ball_count=5, limit_of_miss=5, rate_of_trick=0.075),  # Normal
+    Preset(name="Advanced", ball_count=7, limit_of_miss=5, rate_of_trick=0.05),  # Hard
+]
+
 
 class SettingsScene(scene.Scene):
 
     def __init__(self, name):
         global presets
         super().__init__(name)  # スーパークラス Omajinai
-        self.current_preset = presets[0] # Most easiler
+        self.current_preset = presets[0]  # Most easiler
         self.flash_message = ""
 
     def apply_preset(self, preset: Preset):
         self.current_preset = preset
-        self.flash_message = "Difficuly level has been changed {}.".format(preset.name)
+        self.flash_message = "Difficulty level has been changed {}.".format(preset.name)
+        self.app.pyi.play(0, 1)
 
     def update(self, pyxel):
         global presets

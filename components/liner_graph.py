@@ -3,7 +3,7 @@ import math
 
 class LinerGraph:
 
-    def __init__(self, data_x, data_y, zoom=1.0, graph_size=[100, 100]):
+    def __init__(self, data_x, data_y, label_x, label_y, zoom=1.0, graph_size=[100, 100]):
         self.data_x = data_x
         self.data_y = data_y
         self.zoom = zoom
@@ -11,6 +11,7 @@ class LinerGraph:
         self.graph_size_y = graph_size[1]
         self.visual_data = []
         self.data_label = []
+        self.label_x, self.label_y = label_x, label_y
 
     def calculate(self, zoom=1.0):
         if not len(self.data_x) == len(self.data_y):  # データの個数が一致しない
@@ -33,6 +34,9 @@ class LinerGraph:
         ad_data_x = self.data_x[0:data_range_len]
         ad_data_y = self.data_y[0:data_range_len]
 
+        ad_label_x = self.label_x[0:data_range_len]
+        ad_label_y = self.label_y[0:data_range_len]
+
         # グラフの描写サイズに合わせて指数化する
         data_x_max, data_y_max = get_max(ad_data_x), get_max(ad_data_y)
         index_data_x = [i / data_x_max * self.graph_size_x for i in ad_data_x]
@@ -40,7 +44,7 @@ class LinerGraph:
 
         # 束ねる
         self.visual_data = list(zip(index_data_x, index_data_y))
-        self.data_label = list(zip(ad_data_x, ad_data_y))
+        self.data_label = list(zip(ad_label_x, ad_label_y))
 
     def render(self, pyxel_app, x, y, title="Title"):
 
@@ -57,12 +61,15 @@ class LinerGraph:
         interval = self.graph_size_x / data_size if data_size > 0 else 99999.0
         interval_exp = 1
 
+        max_label_y = 0
+
         while interval <= 15.0:  # ラベルの感覚が最低15px以上になるように
             interval_exp += 1
             interval = self.graph_size_x / (data_size / interval_exp)
 
         for k in range(data_size):
             v_data = self.visual_data[k]
+            label_y = float(self.data_label[k][1])
             # x軸に点をつける。
             pyxel_app.circ(x + v_data[0], y, 1, 0)
             pyxel_app.circ(x + v_data[0], y - v_data[1], 1, 6)
@@ -72,7 +79,12 @@ class LinerGraph:
                 pyxel_app.text(x + v_data[0] - 4, y + 10, str(round(self.data_label[k][0], 2)), 2)
                 # pyxel_app.text(x-20, y-v_data[1], str(round(self.data_label[k][1], 2)) ,2)
 
+            if max_label_y < label_y:
+                max_label_y = label_y
+
             # グラフの変化率を描く。
             if k < len(self.visual_data) - 1:
                 v_data_next = self.visual_data[k + 1]
                 pyxel_app.line(x + v_data[0], y - v_data[1], x + v_data_next[0], y - v_data_next[1], 6)
+
+        pyxel_app.text(x-18, y - self.graph_size_y, str(int(max_label_y)), 2)
