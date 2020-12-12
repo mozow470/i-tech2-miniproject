@@ -2,13 +2,20 @@ import scene
 from random import randint, random
 
 
+class Preset(object):
+
+    def __init__(self, name="Easy", ball_count=4, limit_of_miss=5, rate_of_trick=0.1):
+        self.name = name # Preset name
+        self.ball_count = ball_count  # ボール（当たり判定の個数）
+        self.limit_of_miss = limit_of_miss  # ミス許容範囲
+        self.rate_of_trick = rate_of_trick  # トリックボール率
+
+
 class Ball(object):
 
     def __init__(self, game, x, y, radius=10):
         self.game = game
-        self.radius = radius
-        self.xy = [x, y]
-        self.is_trick = random() <= 0.15  # 15%の確立
+        self.reset(x, y)
 
     def is_clicked(self, x, y):
         vec = self.xy[0] - x, self.xy[1] - y  # マウスの位置から、オブジェクトの中心座標に向いたベクトル
@@ -26,10 +33,9 @@ class Ball(object):
             self.reset(x=randint(10, 190), y=randint(10, 190))
 
     def reset(self, x, y):
-        self.xy[0] = x
-        self.xy[1] = y
+        self.xy = x, y
         self.radius = randint(10, 20)
-        self.is_trick = random() <= 0.15  # 15%の確立
+        self.is_trick = random() <= self.game.rate_of_trick  # 15%の確立
 
     def get_color(self):
         return 9 if self.is_trick else 8
@@ -39,8 +45,15 @@ class GameScene(scene.Scene):
 
     def __init__(self, name):
         super().__init__(name)  # スーパークラス Omajinai
-        self.ball_count = 4  # ボール（当たり判定の個数）
-        self.limit_of_miss = 5  # ミス許容範囲
+        self.reset(Preset()) # Load default preset
+
+    def reset(self, preset: Preset):
+        # プリセットからパラメータを読み込む（副作用防止のため、値を渡すだけ。）
+        self.ball_count = preset.ball_count
+        self.limit_of_miss = preset.limit_of_miss
+        self.rate_of_trick = preset.rate_of_trick
+
+        # 処理用
         self.point = 0
         self.accuracies = []
         self.accuracy = 0.0
@@ -76,6 +89,7 @@ class GameScene(scene.Scene):
                         self.accuracy = round(sum(self.accuracies) / len(self.accuracies) * 100.0, 1)  # 精度％を求める。
                         ball.reset(x=randint(10, 190), y=randint(10, 190))  # 個体情報をリセットする。
                         pyxel.play(0, 0)
+                continue
 
     def draw(self, pyxel):
         # pyxel.text(10, 10, "Point: {}".format(self.point), 0)
@@ -89,11 +103,7 @@ class GameScene(scene.Scene):
         return Ball(game=self, x=randint(10, 190), y=randint(10, 190), radius=randint(10, 30))
 
     def before_render(self, pyxel, parameters):
-        self.point = 0  # reset point for next game.
-        self.accuracy = 0
-        self.miss_count = 0
-        self.accuracies = []
-        self.balls = [self.create_ball() for i in range(self.ball_count)]
+        self.reset(preset=parameters.preset)  # load preset
 
     def count_miss(self):
         self.miss_count += 1

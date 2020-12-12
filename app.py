@@ -15,7 +15,7 @@ class App:
 
     def __init__(self):
         self.pyi = pyxel
-        self.store = Store(app=self);
+        self.store = Store(app=self)
         self.scenes_manager = Scenes(app=self)
 
         make_store_files()  # make an store file if not exit in working folder.
