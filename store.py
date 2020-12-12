@@ -53,12 +53,13 @@ class Store(object):
        @param point 結果のポイント
        @param accuracy 結果の精度
     """
-    def push_to_store(self, point, accuracy):
+    def push_to_store(self, *values):
         now_unix = datetime.datetime.now().timestamp()
+        mapped_values = map(str, values) # joinを使うから
         try:
             store_file = get_store_path().joinpath(self.file_path)
             with store_file.open(mode="a", encoding="utf-8") as file:
-                file.writelines("{} {} {}\n".format(now_unix, point, accuracy))
+                file.writelines("{} {}\n".format(now_unix, " ".join(mapped_values))) # one record per one line
                 file.close()
             self.records.append([now_unix, point, accuracy])
         except OSError as excp:
