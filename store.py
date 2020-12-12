@@ -2,17 +2,23 @@ import os
 import pathlib
 import datetime
 
-STORE_FILE_NAME = "store.log"
+STORE_FILE_NAME = "store.log"  # Default name for store system
 
 
+"""
+   Workinディレクトリを取得する
+"""
 def get_store_path():
     return pathlib.Path(os.getcwd()).resolve()
 
 
-def make_store_files():
+"""
+   Logファイルを作成する。
+"""
+def make_store_files(default=STORE_FILE_NAME):
     logs_folder = get_store_path()
     try:
-        store_file = logs_folder.joinpath(STORE_FILE_NAME)
+        store_file = logs_folder.joinpath(default)
         if not store_file.exists():
             store_file.touch()
             print("** ストアファイルを作成しました: {}".format(store_file))
@@ -22,8 +28,9 @@ def make_store_files():
 
 class Store(object):
 
-    def __init__(self, app):
+    def __init__(self, app, default=STORE_FILE_NAME):
         self.app = app
+        self.file_path = default
         self.records = []
 
     """
@@ -31,7 +38,7 @@ class Store(object):
     """
     def import_from_store(self):
         try:
-            store_file = get_store_path().joinpath(STORE_FILE_NAME)
+            store_file = get_store_path().joinpath(self.file_path)
             with store_file.open(mode="r", encoding="utf-8") as file:
                 records = file.readlines()
                 for i in range(len(records)):
@@ -49,7 +56,7 @@ class Store(object):
     def push_to_store(self, point, accuracy):
         now_unix = datetime.datetime.now().timestamp()
         try:
-            store_file = get_store_path().joinpath(STORE_FILE_NAME)
+            store_file = get_store_path().joinpath(self.file_path)
             with store_file.open(mode="a", encoding="utf-8") as file:
                 file.writelines("{} {} {}\n".format(now_unix, point, accuracy))
                 file.close()
