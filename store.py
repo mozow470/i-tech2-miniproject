@@ -4,10 +4,11 @@ import datetime
 
 STORE_FILE_NAME = "store.log"  # Default name for store system
 
-
 """
    Workinディレクトリを取得する
 """
+
+
 def get_store_path():
     return pathlib.Path(os.getcwd()).resolve()
 
@@ -15,6 +16,8 @@ def get_store_path():
 """
    Logファイルを作成する。
 """
+
+
 def make_store_files(default=STORE_FILE_NAME):
     logs_folder = get_store_path()
     try:
@@ -36,6 +39,7 @@ class Store(object):
     """
        Storeファイルを読み込む
     """
+
     def import_from_store(self):
         try:
             store_file = get_store_path().joinpath(self.file_path)
@@ -53,14 +57,17 @@ class Store(object):
        @param point 結果のポイント
        @param accuracy 結果の精度
     """
+
     def push_to_store(self, *values):
         now_unix = datetime.datetime.now().timestamp()
-        mapped_values = map(str, values) # joinを使うから
+        now_unix = str(now_unix)  # convert to string
+        mapped_values = map(str, values)  # joinを使うから
         try:
             store_file = get_store_path().joinpath(self.file_path)
             with store_file.open(mode="a", encoding="utf-8") as file:
-                file.writelines("{} {}\n".format(now_unix, " ".join(mapped_values))) # one record per one line
+                file.writelines("{} {}\n".format(now_unix, " ".join(mapped_values)))  # one record per one line
                 file.close()
-            self.records.append([now_unix, point, accuracy])
+            print([now_unix, *values])
+            self.records.append([now_unix, *values])
         except OSError as excp:
             print("** ストアファイルの書き込みに失敗しました。プレイデータは保存されません. {}".format(excp))

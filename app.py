@@ -36,7 +36,10 @@ class App:
         self.scenes_manager.transition("main_scene")  # 初期のシーンを設定
         # self.scenes_manager.transition("game_scene")  # 初期のシーンを設定(Dev)
 
+        # Pyxel settings (Optional)
         pyxel.init(200, 200)
+        pyxel.sound(0).set(note='C3', tone='T', volume='3', effect='N', speed=30)
+        pyxel.sound(1).set(note='A3', tone='N', volume='3', effect='N', speed=30)
         pyxel.mouse(True)
         pyxel.run(self.update, self.draw)
 

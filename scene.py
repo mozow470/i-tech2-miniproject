@@ -9,6 +9,7 @@ class Scene(object):
     def set_app(self, app):
         self.app = app
         self.pyi = app.pyi  # pyxel instance for coding in methods.
+        self.on_registered(self.pyi)
 
     """
         pyxel更新メソッド
@@ -38,7 +39,16 @@ class Scene(object):
                他コンポーネントにトランジションする前に呼ばれる関数
                @param pyi pyxelインスタンス。selfからも参照できるが、わざわざself.書くのもめんどくさいので渡してあげる。
                """
+
     def before_transition(self, pyxel):
+        pass
+
+    """
+        シーンオブジェクトに登録後、呼び出されるメソッド。サウンド等を定義する。
+        @param pyi pyxelインスタンス。selfからも参照できるが、わざわざself.書くのもめんどくさいので渡してあげる。
+                  """
+
+    def on_registered(self, pyxel):
         pass
 
 
@@ -70,6 +80,6 @@ class Scenes(object):
         for i in range(len(self.scenes)):
             scene = self.scenes[i]
             if scene.name == name and prev_scene.name != name:  # 名前が一致したら、それをメインシーンに設定する。
-                prev_scene.before_transition(self.app.pyi)   # イベントを呼び出す。
+                prev_scene.before_transition(self.app.pyi)  # イベントを呼び出す。
                 scene.before_render(self.app.pyi, parameters=parameters)
                 self.focused_scene = scene

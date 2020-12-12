@@ -22,6 +22,7 @@ class Ball(object):
         if self.radius <= 1:  # 直径が1以下になったら、当たり判定を初期化する。
             if not self.is_trick:
                 self.game.count_miss()  # ミスをカウント
+                self.game.pyi.play(0, 1)
             self.reset(x=randint(10, 190), y=randint(10, 190))
 
     def reset(self, x, y):
@@ -65,6 +66,8 @@ class GameScene(scene.Scene):
                         self.point -= 50
                         if self.point < 0:
                             self.point = 0
+                        pyxel.play(0, 1)
+
                     else:
                         adj_acc = 1 - accurate  # 余事象
                         point = int(100 * adj_acc)  # point
@@ -72,6 +75,7 @@ class GameScene(scene.Scene):
                         self.accuracies.append(adj_acc)
                         self.accuracy = round(sum(self.accuracies) / len(self.accuracies) * 100.0, 1)  # 精度％を求める。
                         ball.reset(x=randint(10, 190), y=randint(10, 190))  # 個体情報をリセットする。
+                        pyxel.play(0, 0)
 
     def draw(self, pyxel):
         # pyxel.text(10, 10, "Point: {}".format(self.point), 0)
