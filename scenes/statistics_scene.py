@@ -31,7 +31,7 @@ class StatisticsScene(scene.Scene):
         self.graph.render(pyxel, x=10, y=130, title="Your Score statics x{}".format(round(self.zoom_on, 1)))
         pyxel.text(5, 190, "Press S to back to main.", 5)
 
-    def before_render(self, pyxel, parameters):
+    def before_render(self, pyxel, parameters, before):
         data = self.app.store.records
         self.data_x = [i for i in range(len(data))]  # index
         self.data_y = [int(data[i][1]) for i in range(len(data))]  # score

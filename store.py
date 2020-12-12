@@ -7,8 +7,6 @@ STORE_FILE_NAME = "store.log"  # Default name for store system
 """
    Workinディレクトリを取得する
 """
-
-
 def get_store_path():
     return pathlib.Path(os.getcwd()).resolve()
 
@@ -16,8 +14,6 @@ def get_store_path():
 """
    Logファイルを作成する。
 """
-
-
 def make_store_files(default=STORE_FILE_NAME):
     logs_folder = get_store_path()
     try:
@@ -39,7 +35,6 @@ class Store(object):
     """
        Storeファイルを読み込む
     """
-
     def import_from_store(self):
         try:
             store_file = get_store_path().joinpath(self.file_path)
@@ -67,7 +62,6 @@ class Store(object):
             with store_file.open(mode="a", encoding="utf-8") as file:
                 file.writelines("{} {}\n".format(now_unix, " ".join(mapped_values)))  # one record per one line
                 file.close()
-            print([now_unix, *values])
             self.records.append([now_unix, *values])
         except OSError as excp:
             print("** ストアファイルの書き込みに失敗しました。プレイデータは保存されません. {}".format(excp))

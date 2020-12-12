@@ -7,6 +7,7 @@ class CountdownScene(scene.Scene):
         super().__init__(name)  # スーパークラス Omajinai
         self.counter = 3
         self.tick = 0
+        self.preset = None
 
     def update(self, pyxel):
         if pyxel.btnp(pyxel.KEY_Q):
@@ -17,11 +18,13 @@ class CountdownScene(scene.Scene):
         if self.tick % 30 == 0:  # 30秒に一回
             self.counter -= 1
             if self.counter <= 0:  # カウントダウン終了
-                self.app.scenes_manager.transition("game_scene")
+                self.app.scenes_manager.transition("game_scene", preset=self.preset)
 
     def draw(self, pyxel):
         pyxel.text(75, 90, "Stating in {}".format(self.counter), 1)
 
-    def before_render(self, pyxel, parameters):
+    def before_render(self, pyxel, parameters, before):
         self.tick = 0
         self.counter = 3
+        self.preset = parameters["preset"]
+        print("[Countdown] Game Mode:", self.preset.name)

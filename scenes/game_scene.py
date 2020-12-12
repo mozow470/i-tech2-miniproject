@@ -52,6 +52,7 @@ class GameScene(scene.Scene):
         self.ball_count = preset.ball_count
         self.limit_of_miss = preset.limit_of_miss
         self.rate_of_trick = preset.rate_of_trick
+        self.preset_name = preset.name
 
         # 処理用
         self.point = 0
@@ -102,10 +103,12 @@ class GameScene(scene.Scene):
     def create_ball(self):
         return Ball(game=self, x=randint(10, 190), y=randint(10, 190), radius=randint(10, 30))
 
-    def before_render(self, pyxel, parameters):
-        self.reset(preset=parameters.preset)  # load preset
+    def before_render(self, pyxel, parameters, before):
+        preset = parameters["preset"]
+        self.reset(preset=preset)  # load preset
+        print("[Game] Game Mode:", preset.name)
 
     def count_miss(self):
         self.miss_count += 1
         if self.miss_count >= self.limit_of_miss:  # 10会ミスった
-            self.app.scenes_manager.transition("result_scene", point=self.point, accuracy=self.accuracy)  # リザルト画面へ
+            self.app.scenes_manager.transition("result_scene", point=self.point, accuracy=self.accuracy, preset_name=self.preset_name)  # リザルト画面へ

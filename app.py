@@ -1,8 +1,8 @@
 import pyxel
 
 from scene import Scenes
-from scenes.test_scene import TestScene
 from scenes.main_scene import MainScene
+from scenes.settings_scene import SettingsScene
 from scenes.game_scene import GameScene
 from scenes.statistics_scene import StatisticsScene
 from scenes.countdown_scene import CountdownScene
@@ -22,7 +22,7 @@ class App:
         self.store.import_from_store()
 
         register_scenes = [
-            TestScene(name="test_scene"),  # シーンを登録
+            SettingsScene(name="settings_scene"),  # シーンを登録
             MainScene(name="main_scene"),
             GameScene(name="game_scene"),
             StatisticsScene(name="statistics_scene"),
