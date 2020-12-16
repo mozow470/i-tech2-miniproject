@@ -11,7 +11,7 @@ class MainScene(scene.Scene):
         self.preset = presets[0]
 
     def update(self, pyxel):
-        # define key actions
+        # define key actionsを
         if pyxel.btnp(pyxel.KEY_D):
             self.app.scenes_manager.transition("statistics_scene")
         elif pyxel.btnp(pyxel.KEY_SPACE):

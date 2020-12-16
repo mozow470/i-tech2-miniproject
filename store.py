@@ -35,6 +35,7 @@ class Store(object):
     """
        Storeファイルを読み込む
     """
+
     def import_from_store(self):
         try:
             store_file = get_store_path().joinpath(self.file_path)
@@ -49,8 +50,7 @@ class Store(object):
 
     """
        Storeに追加、および書き込み
-       @param point 結果のポイント
-       @param accuracy 結果の精度
+       @param values 結果のポイント
     """
 
     def push_to_store(self, *values):

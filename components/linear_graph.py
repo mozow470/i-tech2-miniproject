@@ -1,14 +1,12 @@
 import math
 
 
-class LinerGraph:
+class LinearGraph:
 
     def __init__(self, data_x, data_y, label_x, label_y, zoom=1.0, graph_size=[100, 100]):
-        self.data_x = data_x
-        self.data_y = data_y
+        self.data_x, self.data_y = data_x, data_y
         self.zoom = zoom
-        self.graph_size_x = graph_size[0]
-        self.graph_size_y = graph_size[1]
+        self.graph_size_x, self.graph_size_y = graph_size[0], graph_size[1]
         self.visual_data = []
         self.data_label = []
         self.label_x, self.label_y = label_x, label_y

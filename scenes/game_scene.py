@@ -1,3 +1,5 @@
+from typing import List, Any, Tuple
+
 import scene
 from random import randint, random
 
@@ -13,11 +15,15 @@ class Preset(object):
 
 class Ball(object):
 
+    is_trick: bool
+    radius: float
+    xy: Tuple[int, int]
+
     def __init__(self, game, x, y, radius=10):
         self.game = game
         self.reset(x, y)
 
-    def is_clicked(self, x, y):
+    def get_accuracy(self, x, y):
         vec = self.xy[0] - x, self.xy[1] - y  # マウスの位置から、オブジェクトの中心座標に向いたベクトル
         vec_size = abs(vec[0]) + abs(vec[1])  # 単位を揃えたいので絶対値でベクトルの大きさを求める
         accurate: float = float(vec_size) / float(self.radius + 2)
@@ -34,7 +40,7 @@ class Ball(object):
 
     def reset(self, x, y):
         self.xy = x, y
-        self.radius = randint(10, 20)
+        self.radius = float(randint(10, 20))
         self.is_trick = random() <= self.game.rate_of_trick  # 15%の確立
 
     def get_color(self):
@@ -42,6 +48,16 @@ class Ball(object):
 
 
 class GameScene(scene.Scene):
+
+    balls: List[Ball]
+    miss_count: int
+    accuracy: float
+    accuracies: List[Any]
+    point: int
+    preset_name: str
+    rate_of_trick: float
+    limit_of_miss: int
+    ball_count: int
 
     def __init__(self, name):
         super().__init__(name)  # スーパークラス Omajinai
@@ -73,7 +89,7 @@ class GameScene(scene.Scene):
             ball.transition()  # 小さくなっていく
 
             if is_clicked:
-                accurate = ball.is_clicked(mouse_xy[0], mouse_xy[1])  # クリック精度を取得
+                accurate = ball.get_accuracy(mouse_xy[0], mouse_xy[1])  # クリック精度を取得
 
                 if accurate <= 1:  # ボールをクリックした
                     if ball.is_trick:  # クリックしてはいけないトリックボールをクリックした。

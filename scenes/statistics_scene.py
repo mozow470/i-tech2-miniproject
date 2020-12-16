@@ -1,6 +1,6 @@
 import scene
 
-from components.liner_graph import LinerGraph
+from components.linear_graph import LinearGraph
 
 
 class StatisticsScene(scene.Scene):
@@ -44,4 +44,4 @@ class StatisticsScene(scene.Scene):
         self.graph.calculate(zoom=self.zoom_on)
 
     def make_graph(self):
-        return LinerGraph(data_x=self.data_x, data_y=self.data_y, label_x=self.label_x, label_y=self.label_y, zoom=0.1, graph_size=[170, 100])
+        return LinearGraph(data_x=self.data_x, data_y=self.data_y, label_x=self.label_x, label_y=self.label_y, zoom=0.1, graph_size=[170, 100])
