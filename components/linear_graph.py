@@ -11,6 +11,10 @@ class LinearGraph:
         self.data_label = []
         self.label_x, self.label_y = label_x, label_y
 
+    """
+                描写に必要な変数を調整する
+                @param zoom 拡大率
+    """
     def calculate(self, zoom=1.0):
         if not len(self.data_x) == len(self.data_y):  # データの個数が一致しない
             raise BaseException("Cannot calculate for zip")
@@ -44,6 +48,12 @@ class LinearGraph:
         self.visual_data = list(zip(index_data_x, index_data_y))
         self.data_label = list(zip(ad_label_x, ad_label_y))
 
+    """
+            Pyxelに描写する
+            @param pyxel_app Pyxelオブジェクト
+            @param x 描写するX座標
+            @param y 描写するY座標
+    """
     def render(self, pyxel_app, x, y, title="Title"):
 
         data_size = len(self.visual_data)

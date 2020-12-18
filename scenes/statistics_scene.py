@@ -43,5 +43,9 @@ class StatisticsScene(scene.Scene):
         self.graph = self.make_graph()
         self.graph.calculate(zoom=self.zoom_on)
 
+    """
+        グラフオブジェクトを作成する
+        @param app グラフオブジェクトを作成する
+    """
     def make_graph(self):
         return LinearGraph(data_x=self.data_x, data_y=self.data_y, label_x=self.label_x, label_y=self.label_y, zoom=0.1, graph_size=[170, 100])

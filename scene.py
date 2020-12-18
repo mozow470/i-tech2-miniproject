@@ -6,6 +6,10 @@ class Scene(object):
         self.name = name
         self.background = background
 
+    """
+            アプリインスタンスを登録する
+            @param app 登録するアプリインスタンス
+            """
     def set_app(self, app):
         self.app = app
         self.pyi = app.pyi  # pyxel instance for coding in methods.

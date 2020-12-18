@@ -116,6 +116,9 @@ class GameScene(scene.Scene):
             ball = self.balls[i]
             pyxel.circ(ball.xy[0], ball.xy[1], ball.radius, ball.get_color())
 
+    """
+        ボールオブジェクトを作成して返す
+    """
     def create_ball(self):
         return Ball(game=self, x=randint(10, 190), y=randint(10, 190), radius=randint(10, 30))
 
@@ -124,6 +127,9 @@ class GameScene(scene.Scene):
         self.reset(preset=preset)  # load preset
         print("[Game] Game Mode:", preset.name)
 
+    """
+        ミスをカウントする。また、ミスカウントから、ゲームオーバーの処理も行う
+    """
     def count_miss(self):
         self.miss_count += 1
         if self.miss_count >= self.limit_of_miss:  # 10会ミスった
