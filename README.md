@@ -20,4 +20,4 @@ store.logファイルには、デフォルトでサンプルの値が含まれ�
 
 ### 実行方法
 
-```python3 -m app.py```
+```python3 -m app.py``` with pyenv (any virtual python environment)
